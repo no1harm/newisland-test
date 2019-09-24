@@ -10,7 +10,7 @@ const {
 } = require("lodash")
 const {
     findMembers
-} = require('./util')
+} = require('./utils')
 
 
 class LinValidator {

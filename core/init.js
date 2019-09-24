@@ -7,6 +7,8 @@ class InitManager {
     InitManager.app = app
     InitManager.initLoadRouter()
     InitManager.initLoadErrorSetting()
+    // InitManager.initValidator()
+    InitManager.initEnvironmentSetting()
   }
 
   static initLoadRouter(){
@@ -23,8 +25,19 @@ class InitManager {
   }
 
   static initLoadErrorSetting(){
-    const errors = require('./httpException')
+    const errors = require('./http-exception')
     global.errors = errors
+  }
+
+  // static initValidator(){
+  //   const validators = require('../app/validators/validator')
+  //   global.validators = validators
+  // }
+
+  static initEnvironmentSetting(){
+    const Url = `${process.cwd()}/config/config`
+    const config = require(Url)
+    global.config = config
   }
 }
 

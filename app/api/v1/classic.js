@@ -1,17 +1,16 @@
 const Router = require('koa-router')
 const router = new Router()
+const { PositiveIntValidator } = require('../../validators/validator')
 
-router.get('/v1/classic/latest', (ctx, next) => {
+router.get('/v1/:id/classic/latest', async (ctx, next) => {
 
-  abc
+  const v = await new PositiveIntValidator().validate(ctx)
 
-  if(true){
-    const error = new global.errors.ParamsException()
-    // error.requestUrl = `${ctx.method} ${ctx.path}`
-    throw error
-  }
+  // 使用 LinValidator 获取 body 参数
+  // const id = v.get('body',parsed=false)
   
-  ctx.body = {"key" : "classic"}
+  ctx.body = {"x":"x"}
+  
 })
 
 module.exports = router
