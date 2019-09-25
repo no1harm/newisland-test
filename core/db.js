@@ -27,7 +27,7 @@ const sequelize = new Sequelize(dbName,user,password,{
 
 // 使用 force 可以强制更新表
 sequelize.sync({
-  force:true,
+  force:false,
 })
 
 module.exports = {

@@ -10,6 +10,4 @@ app.use(parser())
 
 InitManager.initCore(app)
 
-require('./app/models/user')
-
 app.listen(3000)
