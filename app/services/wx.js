@@ -15,12 +15,12 @@ class WxManager {
     if(result.status !== 200){
       throw new global.errors.AuthFailed('openid 获取失败')
     }
-    if(result.data.errcode !== 0){
+    if(result.data.errcode){
       throw new global.errors.AuthFailed(`openid 获取失败 ${result.data.errcode}`)
     }
     let user = await Users.getUserByOpenId(result.data.openid)
     if(!user){
-      user = await Users.registerByOpenId(openid)
+      user = await Users.registerByOpenId(result.data.openid)
     }
     const token = generateToken(user.id,Auth.USER)
     return token 

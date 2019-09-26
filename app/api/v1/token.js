@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 const { LoginType } = require('../../lib/enum')
 const { Users } = require('../../models/user')
-const { TokenValidator } = require('../../validators/validator')
+const { TokenValidator, NoEmptyValidator } = require('../../validators/validator')
 const { generateToken } = require('../../../core/utils')
 const { Auth } = require('../../../middlewares/auth')
 const router = new Router({
@@ -30,6 +30,12 @@ router.post('/',async (ctx,next) => {
   ctx.body = {
     token
   }
+})
+
+router.post('/verify',async (ctx,next) => {
+  const v = await new NoEmptyValidator().validate(ctx)
+  const result = Auth.verifyToken(v.get('body.token'))
+  ctx.body = { result }
 })
 
 async function emailLogin(email,secret){

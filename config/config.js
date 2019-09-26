@@ -12,8 +12,8 @@ module.exports = {
     expiresIn:60*60*24*7
   },
   wx:{
-    appId:'',
-    appSecret:'',
+    appId:'wx0e3b95d18afb3639',
+    appSecret:'5de08fc7673cba3a355a868520ac86e3',
     loginUrl:'https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code'
   }
 }
