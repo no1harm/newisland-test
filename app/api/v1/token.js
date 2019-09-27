@@ -35,7 +35,7 @@ router.post('/',async (ctx,next) => {
 router.post('/verify',async (ctx,next) => {
   const v = await new NoEmptyValidator().validate(ctx)
   const result = Auth.verifyToken(v.get('body.token'))
-  ctx.body = { result }
+  ctx.body = { is_valide:result }
 })
 
 async function emailLogin(email,secret){

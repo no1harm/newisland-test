@@ -1,6 +1,6 @@
 const { LinValidator,Rule } = require('../../core/lin-validator')
 const { Users } = require('../models/user')
-const { LoginType } = require('../lib/enum')
+const { LoginType,ArtType } = require('../lib/enum')
 
 class PositiveIntValidator extends LinValidator {
   constructor(){
@@ -60,6 +60,7 @@ class RegisterValidator extends LinValidator {
 class TokenValidator extends LinValidator {
   constructor(){
     super()
+    this.validateType = checkType
     this.account = [
       new Rule('isLength','账号不符合规范',{
         min:4,
@@ -74,15 +75,6 @@ class TokenValidator extends LinValidator {
       })
     ] 
   }
-
-  validateLoginType(vals){
-    if(!vals.body.type){
-      throw new Error('type 为必填参数')
-    }
-    if(!LoginType.isLoginType(vals.body.type)){
-      throw new Error('type 不合法')
-    }
-  }
 }
 
 class NoEmptyValidator extends LinValidator {
@@ -96,9 +88,35 @@ class NoEmptyValidator extends LinValidator {
   }
 }
 
+function checkType(vals){
+  if(!vals.body.type){
+    throw new Error('type 为必填参数')
+  }
+  if(!LoginType.isLoginType(vals.body.type)){
+    throw new Error('type 不合法')
+  }
+}
+
+function checkArtType(vals){
+  if(!vals.body.type){
+    throw new Error('type 为必填参数')
+  }
+  if(!ArtType.isArtType(vals.body.type)){
+    throw new Error('type 不合法')
+  }
+}
+
+class LikeValidator extends PositiveIntValidator {
+  constructor(){
+    super()
+    this.validateType = checkArtType
+  }
+}
+
 module.exports = {
   PositiveIntValidator,
   RegisterValidator,
   TokenValidator,
-  NoEmptyValidator
+  NoEmptyValidator,
+  LikeValidator
 }
