@@ -1,5 +1,5 @@
 const { sequelize } = require('../../core/db')
-const { Sequelize, Model } = require('sequelize')
+const { Sequelize, Model, Op  } = require('sequelize')
 const { Art } = require('./art')
 class Favor extends Model {
   static async like(uid,art_id,type){
@@ -21,6 +21,9 @@ class Favor extends Model {
       },{transaction:t})
       
       const art = await Art.getData(art_id,type)
+      if(!art){
+        throw new global.errors.NotFound()
+      }
       await art.increment('fav_nums',{by:1,transaction:t})
     })
   }
@@ -47,7 +50,7 @@ class Favor extends Model {
     })
   }
 
-  static async likeStatus(uid,art_id,type){
+  static async userLikeStatus(uid,art_id,type){
     const favor = await Favor.findOne({
       where:{
         art_id,
@@ -60,6 +63,22 @@ class Favor extends Model {
     }
     return true
   }
+
+  static async getUserAllFavors(uid){
+    const favors = await Favor.findAll({
+      where:{
+        uid,
+        type:{
+          [Op.not]:400
+        }
+      }
+    })
+    if(!favors){
+      throw new global.errors.NotFound()
+    }
+    return await Art.handleUserFavorsList(favors)
+  }
+
 }
 
 Favor.init({

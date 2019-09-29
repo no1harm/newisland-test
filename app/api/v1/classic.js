@@ -1,5 +1,5 @@
 const Router = require('koa-router')
-const { PositiveIntValidator,LikeValidator } = require('../../validators/validator')
+const { PositiveIntValidator,LikeValidator,ClassicValidator } = require('../../validators/validator')
 const { Auth } = require('../../../middlewares/auth')
 const { Flow } = require('../../models/flow')
 const { Art } = require('../../models/art')
@@ -30,11 +30,43 @@ router.post('/like_status',new Auth().token, async(ctx,next) => {
     id:'art_id'
   })
 
-  const status = await Favor.likeStatus(ctx.auth.uid,v.get('body.art_id'),v.get('body.type'))
+  const status = await Favor.userLikeStatus(ctx.auth.uid,v.get('body.art_id'),v.get('body.type'))
 
   ctx.body = {
     like_status:status
   }
+
+})
+
+router.get('/:type/:id/favor',new Auth().token, async(ctx,next) => {
+  const v = await new ClassicValidator().validate(ctx)
+
+  const id = v.get('path.id')
+
+  const type = v.get('path.type')
+
+  const classic = await Art.getData(id,parseInt(type))
+
+  if(!classic){
+    throw new global.errors.NotFound()
+  }
+
+  const like = await Favor.userLikeStatus(ctx.auth.uid,v.get('path.id'),v.get('path.type'))
+
+  ctx.body = {
+    fav_nums:classic.fav_nums,
+    like_status:like
+  }
+
+})
+
+router.get('/favors',new Auth().token, async(ctx,next) => {
+  
+  const uid = ctx.auth.uid
+
+  const result = await Favor.getUserAllFavors(uid)
+
+  ctx.body = result
 
 })
 

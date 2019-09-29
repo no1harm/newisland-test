@@ -34,6 +34,15 @@ class AuthFailed extends HttpException {
   }
 }
 
+class NotFound extends HttpException {
+  constructor(msg,errorCode=10003,statusCode=404){
+    super()
+    this.msg = msg || "资源未找到",
+    this.errorCode = errorCode || 10002
+    this.statusCode = statusCode || 404
+  }
+}
+
 class Forbidden extends HttpException {
   constructor(msg,errorCode=10003,statusCode=403){
     super()
@@ -70,5 +79,6 @@ module.exports = {
   AuthFailed,
   Forbidden,
   LikeError,
-  DisLikeError
+  DisLikeError,
+  NotFound
 }

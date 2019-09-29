@@ -98,10 +98,11 @@ function checkType(vals){
 }
 
 function checkArtType(vals){
-  if(!vals.body.type){
+  const type = vals.body.type || vals.path.type
+  if(!type){
     throw new Error('type 为必填参数')
   }
-  if(!ArtType.isArtType(vals.body.type)){
+  if(!ArtType.isArtType(type)){
     throw new Error('type 不合法')
   }
 }
@@ -113,10 +114,17 @@ class LikeValidator extends PositiveIntValidator {
   }
 }
 
+class ClassicValidator extends LikeValidator {
+  constructor(){
+    super()
+  }
+}
+
 module.exports = {
   PositiveIntValidator,
   RegisterValidator,
   TokenValidator,
   NoEmptyValidator,
-  LikeValidator
+  LikeValidator,
+  ClassicValidator
 }
