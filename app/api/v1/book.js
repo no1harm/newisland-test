@@ -4,7 +4,7 @@ const router = new Router({
 })
 const { HotBook } = require('../../models/hot-book')
 const { Book } = require('../../models/book')
-const { PositiveIntValidator } = require('../../validators/validator')
+const { PositiveIntValidator,SearchBookValidator } = require('../../validators/validator')
 const { Auth } = require('../../../middlewares/auth')
 
 router.get('/hot_books', new Auth().token, async (ctx, next) => {
@@ -14,12 +14,16 @@ router.get('/hot_books', new Auth().token, async (ctx, next) => {
   }
 })
 
-router.get('/:id',async (ctx,next) => {
+router.get('/:id/detail',async (ctx,next) => {
   const v = await new PositiveIntValidator().validate(ctx)
   const detail = await new Book(v.get('path.id')).getDetail()
-  console.log('-------------------')
-  console.log(detail)
   ctx.body = detail
+})
+
+router.get('/search',async (ctx,next) => {
+  const v = await new SearchBookValidator().validate(ctx)
+  const result = await Book.searchBook(v.get('query.q'),v.get('query.start'),v.get('query.count'))
+  ctx.body = result
 })
 
 module.exports = router

@@ -120,11 +120,38 @@ class ClassicValidator extends LikeValidator {
   }
 }
 
+class SearchBookValidator extends LinValidator {
+  constructor(){
+    super()
+    this.q = [
+      new Rule('isLength','长度不符合规范',{
+        min:1,
+        max:16
+      })
+    ]
+    this.count = [
+      new Rule('isInt','不符合规范',{
+        min:1,
+        max:20
+      }),
+      new Rule('isOptional','',5)
+    ]
+    this.start = [
+      new Rule('isInt','不符合规范',{
+        min:1,
+        max:60000
+      }),
+      new Rule('isOptional','',1)
+    ]
+  }
+}
+
 module.exports = {
   PositiveIntValidator,
   RegisterValidator,
   TokenValidator,
   NoEmptyValidator,
   LikeValidator,
-  ClassicValidator
+  ClassicValidator,
+  SearchBookValidator
 }

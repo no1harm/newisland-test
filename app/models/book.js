@@ -10,8 +10,18 @@ class Book extends Model {
   }
 
   async getDetail(){
-    const { detailUrl, keywordUrl } = global.config.yushu
+    const { detailUrl } = global.config.yushu
     const url = util.format(detailUrl,this.id)
+    const result = await axios.get(url)
+    if(result.status !== 200){
+      throw new global.errors.NotFound()
+    }
+    return result.data
+  }
+
+  static async searchBook(q,start,count,summary=1){
+    const { keywordUrl } = global.config.yushu
+    const url = util.format(keywordUrl,encodeURI(q),start,count,summary)
     const result = await axios.get(url)
     if(result.status !== 200){
       throw new global.errors.NotFound()
