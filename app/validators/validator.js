@@ -138,10 +138,22 @@ class SearchBookValidator extends LinValidator {
     ]
     this.start = [
       new Rule('isInt','不符合规范',{
-        min:1,
+        min:0,
         max:60000
       }),
-      new Rule('isOptional','',1)
+      new Rule('isOptional','',0)
+    ]
+  }
+}
+
+class BookShortCommentValidator extends PositiveIntValidator {
+  constructor(){
+    super()
+    this.content = [
+      new Rule('isLength','必须在1-12个字符之间',{
+        min:1,
+        max:12
+      })
     ]
   }
 }
@@ -153,5 +165,6 @@ module.exports = {
   NoEmptyValidator,
   LikeValidator,
   ClassicValidator,
-  SearchBookValidator
+  SearchBookValidator,
+  BookShortCommentValidator
 }

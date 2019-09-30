@@ -2,6 +2,7 @@ const { Sequelize, Model } = require('sequelize')
 const axios = require('axios')
 const util = require('util')
 const { sequelize } = require('../../core/db')
+const { Favor } = require('./favor')
 
 class Book extends Model {
   constructor(id){
@@ -28,6 +29,36 @@ class Book extends Model {
     }
     return result.data
   }
+
+  static async getFavorBooksCount(uid){
+    const result = await Favor.count({
+      where:{
+        uid,
+        type:400
+      }
+    })
+    return result
+  }
+
+  static async getBookFavorDetail(uid,bookId){
+    const favorNum = await Favor.count({
+      where:{
+        type:400,
+        art_id:bookId
+      }      
+    })
+    const favorStatus = await Favor.findOne({
+      where:{
+        type:400,
+        uid,
+        art_id:bookId
+      }
+    })
+    return {
+      fav_nums:favorNum,
+      like_status:favorStatus?1:0
+    }
+  }
 }
 
 Book.init({
@@ -37,7 +68,7 @@ Book.init({
   },
   fav_nums:{
     type:Sequelize.INTEGER,
-    default:0
+    defaultValue:0
   }
 },{
   sequelize,
