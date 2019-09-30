@@ -1,6 +1,5 @@
 const { sequelize } = require('../../core/db')
 const { Sequelize, Model, Op  } = require('sequelize')
-const { Art } = require('./art')
 class Favor extends Model {
   static async like(uid,art_id,type){
     const favor = await Favor.findOne({
@@ -19,7 +18,7 @@ class Favor extends Model {
         uid,
         type
       },{transaction:t})
-      
+      const { Art } = require('./art')      
       const art = await Art.getData(art_id,type)
       if(!art){
         throw new global.errors.NotFound()
@@ -45,6 +44,7 @@ class Favor extends Model {
         force:true,
         transaction:t
       })
+      const { Art } = require('./art')
       const art = await Art.getData(art_id,type)
       await art.decrement('fav_nums',{by:1,transaction:t})
     })
@@ -76,6 +76,7 @@ class Favor extends Model {
     if(!favors){
       throw new global.errors.NotFound()
     }
+    const { Art } = require('./art')
     return await Art.handleUserFavorsList(favors)
   }
 
