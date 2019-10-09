@@ -10,9 +10,7 @@ const { BookComment } = require('../../models/book-comment')
 
 router.get('/hot_books', new Auth().token, async (ctx, next) => {
   const books = await HotBook.getAll()
-  ctx.body = {
-    books
-  }
+  ctx.body = books
 })
 
 router.get('/:id/detail',async (ctx,next) => {
@@ -50,6 +48,17 @@ router.post('/add/comment',new Auth().token, async (ctx,next) => {
   const result = await BookComment.addShortComment(v.get('body.content'),v.get('body.book_id'))
 
   throw new global.errors.Success()
+
+})
+
+router.get('/:book_id/comments',new Auth().token, async (ctx,next) => {
+  const v = await new PositiveIntValidator().validate(ctx,{
+    id:'book_id'
+  })
+
+  const result = await BookComment.getAllComments(v.get('path.book_id'))
+
+  ctx.body = result
 
 })
 

@@ -21,6 +21,22 @@ class BookComment extends Model {
       return await comment.increment('nums',{by:1})
     }
   }
+
+  static async getAllComments(book_id){
+    const comments = await BookComment.findAll({
+      where:{
+        book_id
+      }
+    })
+    return comments
+  }
+
+  toJSON(){
+    return {
+      content:this.getDataValue('content'),
+      nums:this.getDataValue('nums')
+    }
+  }
 }
 
 BookComment.init({

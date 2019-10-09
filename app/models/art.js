@@ -47,6 +47,10 @@ class Art {
         break;
       default:
         break;
+    }
+    if(result && result.image){
+      let imgUrl = result.dataValues.image
+      result.dataValues.image = global.config.host + imgUrl
     } 
     return result
   }
