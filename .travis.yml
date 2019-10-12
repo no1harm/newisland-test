@@ -8,5 +8,5 @@ before_install:
 
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker build -t sgt/newisland-test:latest .
-  - docker push sgt/newisland-test:latest
+  - docker build -t chen09869/newisland-test:latest .
+  - docker push chen09869/newisland-test:latest
