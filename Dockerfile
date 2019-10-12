@@ -13,6 +13,7 @@ RUN yarn --only=prod --registry=https://registry.npm.taobao.org
 
 # 把其他源文件复制到工作目录
 COPY . .
+COPY ./vhost.nginx.conf /etc/nginx/conf.d/newisland-test.conf
 
 # 替换成应用实际的端口号
 EXPOSE 3001
